@@ -15,29 +15,27 @@ class AgendasController < ApplicationController
     @agenda.team = Team.friendly.find(params[:team_id])
     current_user.keep_team_id = @agenda.team.id
     if current_user.save && @agenda.save
-      redirect_to dashboard_url, notice: I18n.t('views.messages.create_agenda') 
+      redirect_to dashboard_url, notice: I18n.t('views.messages.create_agenda')
     else
       render :new
     end
   end
 
   def destroy
-    agenda_title=@agenda.title
-    emails=@agenda.team.members.pluck(:email)
+    agenda_title = @agenda.title
+    emails = @agenda.team.members.pluck(:email)
     emails << @agenda.team.owner.email
-    byebug
+
     if @agenda.destroy
       AgendaMailer.destroy_mail(emails, agenda_title).deliver
       redirect_to dashboard_url, notice: I18n.t('views.messages.delete_agenda')
 
     else
-      redirect_to dashboard_url, notice: I18n.t('views.messages.failed_to_delete_agenda') 
+      redirect_to dashboard_url, notice: I18n.t('views.messages.failed_to_delete_agenda')
     end
-
   end
 
   private
-
   def set_agenda
     @agenda = Agenda.find(params[:id])
   end
