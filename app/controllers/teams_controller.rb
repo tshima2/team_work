@@ -1,6 +1,6 @@
 class TeamsController < ApplicationController
   before_action :authenticate_user!
-  before_action :set_team, only: %i[show edit update destroy]
+  before_action :set_team, only: %i[show edit update destroy delegate]
 
   def index
     @teams = Team.all
@@ -15,7 +15,25 @@ class TeamsController < ApplicationController
     @team = Team.new
   end
 
-  def edit; end
+  def edit;  end
+
+  def delegate
+    @team.owner_id = params[:owner_id]
+
+#    if(@team.assigns.pluck(:user_id).include?(@team.owner_id) == false)
+#      asgn = Assign.new(user_id: @team.owner_id, team_id: @team.id)
+#      asgn.save
+#    end
+
+    if @team.save
+      TeamMailer.delegate_leader_mail(@team.owner.email, @team.name).deliver
+      redirect_to @team, notice: I18n.t('views.messages.delegate_leader')
+    else
+      flash.now[:error] = I18n.t('views.messages.failed_to_delegate_leader')
+      render :new
+    end
+
+  end
 
   def create
     @team = Team.new(team_params)

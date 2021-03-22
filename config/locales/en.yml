@@ -265,12 +265,15 @@ en:
       edit_profile: 'Edit Profile'
       team_you_belong_to: 'The team you belong to'
       posted_articles: 'List of posted articles'
+      delegate_leader: 'Delegate leader successfly done.'
+      failed_to_delegate_leader: 'Failed to delegate leader.'
     button:
       submit: 'Submit'
       edit: 'Edit'
       delete: 'Delete'
       create: 'Create'
       invite: 'Invite'
+      delegate: 'Delegate'      
     top:
       line1: 'it is an application to share a specific issue (agenda) easily'
       line2: 'for each member separately for each team or agenda'
