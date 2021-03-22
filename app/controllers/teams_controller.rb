@@ -20,10 +20,10 @@ class TeamsController < ApplicationController
   def delegate
     @team.owner_id = params[:owner_id]
 
-#    if(@team.assigns.pluck(:user_id).include?(@team.owner_id) == false)
-#      asgn = Assign.new(user_id: @team.owner_id, team_id: @team.id)
-#      asgn.save
-#    end
+    # if(@team.assigns.pluck(:user_id).include?(@team.owner_id) == false)
+    #   asgn = Assign.new(user_id: @team.owner_id, team_id: @team.id)
+    #   asgn.save
+    # end
 
     if @team.save
       TeamMailer.delegate_leader_mail(@team.owner.email, @team.name).deliver
@@ -32,7 +32,6 @@ class TeamsController < ApplicationController
       flash.now[:error] = I18n.t('views.messages.failed_to_delegate_leader')
       render :new
     end
-
   end
 
   def create
